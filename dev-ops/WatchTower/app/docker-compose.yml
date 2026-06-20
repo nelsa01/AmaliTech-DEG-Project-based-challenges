@@ -1,21 +1,50 @@
+x-logging: &default-logging
+  driver: "json-file"
+  options:
+    max-size: "10m"
+    max-file: "3"
+
 services:
   order-service:
     build: ./order-service
     ports:
-      - "3001:3001"
+      - "${ORDER_PORT}:${ORDER_PORT}"
     environment:
-      - PORT=3001
+      - PORT=${ORDER_PORT}
+    logging: *default-logging
 
   tracking-service:
     build: ./tracking-service
     ports:
-      - "3002:3002"
+      - "${TRACKING_PORT}:${TRACKING_PORT}"
     environment:
-      - PORT=3002
+      - PORT=${TRACKING_PORT}
+    logging: *default-logging
 
   notification-service:
     build: ./notification-service
     ports:
-      - "3003:3003"
+      - "${NOTIFICATION_PORT}:${NOTIFICATION_PORT}"
     environment:
-      - PORT=3003
+      - PORT=${NOTIFICATION_PORT}
+    logging: *default-logging
+
+  prometheus:
+    image: prom/prometheus:latest
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./prometheus/alerts.yml:/etc/prometheus/alerts.yml
+    logging: *default-logging
+
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./grafana/provisioning:/etc/grafana/provisioning
+      - ./grafana/dashboards:/var/lib/grafana/dashboards
+    depends_on:
+      - prometheus
+    logging: *default-logging
