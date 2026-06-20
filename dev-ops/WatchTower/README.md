@@ -67,7 +67,7 @@ The **AmaliTech Overview** dashboard (`grafana/dashboards/watchtower-overview.js
 ### Service Health
 Built from `up{job=~"order-service|tracking-service|notification-service"}`. `up` is a built-in Prometheus metric per scrape target: `1` means reachable, `0` means down. This is the fastest way to see at a glance whether all three services are alive.
 
-![Service Health panel] (./screenshots/ServiceHealth.png)
+![Service Health panel](./screenshots/ServiceHealth.png)
 
 ### HTTP Request Rate
 Built from `sum(rate(http_requests_total[1m])) by (job)`, requests per second per service, averaged over a rolling 1-minute window.
