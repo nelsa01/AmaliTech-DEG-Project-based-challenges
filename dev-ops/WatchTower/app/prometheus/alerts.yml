@@ -1,0 +1,32 @@
+groups:
+  - name: watchtower_alerts
+    rules:
+      - alert: ServiceDown
+        expr: up{job=~"order-service|tracking-service|notification-service"} == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "{{ $labels.job }} is down"
+          description: "{{ $labels.job }} has been unreachable on /health for more than 1 minute."
+
+      - alert: HighErrorRate
+        expr: |
+          (sum(rate(http_requests_total{status=~"5.."}[5m])) by (job)
+          /
+          sum(rate(http_requests_total[5m])) by (job)) > 0.05
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High error rate on {{ $labels.job }}"
+          description: "{{ $labels.job }} has had more than 5% 5xx responses over the last 5 minutes."
+
+      - alert: ServiceNotScraping
+        expr: up{job=~"order-service|tracking-service|notification-service"} == 0
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Prometheus lost contact with {{ $labels.job }}"
+          description: "{{ $labels.job }} has not been successfully scraped for more than 2 minutes."
