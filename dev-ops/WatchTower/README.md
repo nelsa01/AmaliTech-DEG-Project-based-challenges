@@ -88,7 +88,7 @@ Three alert rules are defined in `prometheus/alerts.yml`:
 | `ServiceDown` | `up == 0` for 1 minute | critical |
 | `HighErrorRate` | 5xx ratio > 5% over a 5-minute window, sustained for 5 minutes | warning |
 | `ServiceNotScraping` | `up == 0` for 2 minutes | warning |
-(./screenshots/AlertsWorking.jpeg)
+(./screenshots/AlertsWorking.png)
 
 ### Testing ServiceDown and ServiceNotScraping (live test)
 
