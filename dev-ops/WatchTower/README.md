@@ -62,7 +62,7 @@ All five containers run on a shared Docker network created automatically by Comp
 
 ## 4. Dashboard Walkthrough
 
-The **AmaliTech Overview** dashboard (`grafana/dashboards/watchtower-overview.json`) is auto-provisioned on startup via Grafana's provisioning system — no manual setup required. It contains three panels:
+The **AmaliTech Overview** dashboard (`grafana/dashboards/watchtower-overview.json`) is auto-provisioned on startup via Grafana's provisioning system, no manual setup required. It contains three panels:
 
 ### Service Health
 Built from `up{job=~"order-service|tracking-service|notification-service"}`. `up` is a built-in Prometheus metric per scrape target: `1` means reachable, `0` means down. This is the fastest way to see at a glance whether all three services are alive.
@@ -70,12 +70,12 @@ Built from `up{job=~"order-service|tracking-service|notification-service"}`. `up
 ![Service Health panel] (./screenshots/ServiceHealth.png)
 
 ### HTTP Request Rate
-Built from `sum(rate(http_requests_total[1m])) by (job)` — requests per second per service, averaged over a rolling 1-minute window.
+Built from `sum(rate(http_requests_total[1m])) by (job)`, requests per second per service, averaged over a rolling 1-minute window.
 
 ![HTTP Request Rate panel](./screenshots/HTTPRequestRate.png)
 
 ### HTTP 5xx Errors
-Built from `sum(rate(http_requests_total{status=~"5.."}[5m])) by (job)`. This panel correctly shows **No data** during normal operation — Prometheus only stores a series for label combinations that have actually occurred, and since no service had returned a 5xx at the time of this screenshot, there's nothing to plot yet. The panel comes alive the moment any service errors.
+Built from `sum(rate(http_requests_total{status=~"5.."}[5m])) by (job)`. This panel correctly shows **No data** during normal operation; Prometheus only stores a series for label combinations that have actually occurred, and since no service had returned a 5xx at the time of this screenshot, there's nothing to plot yet. The panel comes alive the moment any service errors.
 
 ![HTTP 5xx Errors panel — no data is expected here under normal operation](./screenshots/HTTP5xxErrors.png)
 
@@ -119,7 +119,7 @@ Unit Testing:  test_high_error_rate.yml
 ```
 ## 6. Logging
 
-All five containers use a shared `json-file` log driver (configured via the `x-logging` anchor in `docker-compose.yml`), with rotation capped at 10MB per file, 3 files retained — preventing unbounded log growth on a long-running host.
+All five containers use a shared `json-file` log driver (configured via the `x-logging` anchor in `docker-compose.yml`), with rotation capped at 10MB per file, 3 files retained, preventing unbounded log growth on a long-running host.
 
 **View live logs from all services at once:**
 ```bash
