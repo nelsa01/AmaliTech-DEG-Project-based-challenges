@@ -1,6 +1,6 @@
-# WatchTower — Observability Stack for Reyla Logistics
+# WatchTower Challenge Documentation
 
-This repository implements a full observability stack — metrics collection, dashboards, and alerting — for Reyla Logistics' three backend services (`order-service`, `tracking-service`, `notification-service`). It was built as part of the AmaliTech DEG DevOps challenge.
+This repository implements a full observability stack with metrics collection, dashboards, and alerting for Reyla Logistics' three backend services (`order-service`, `tracking-service`, `notification-service`). It was built as part of the AmaliTech DEG DevOps challenge.
 
 ## 1. Architecture
 
@@ -67,17 +67,17 @@ The **AmaliTech Overview** dashboard (`grafana/dashboards/watchtower-overview.js
 ### Service Health
 Built from `up{job=~"order-service|tracking-service|notification-service"}`. `up` is a built-in Prometheus metric per scrape target: `1` means reachable, `0` means down. This is the fastest way to see at a glance whether all three services are alive.
 
-![Service Health panel] (./screenshots/Service-health.png)
+![Service Health panel] (./screenshots/Service health.png)
 
 ### HTTP Request Rate
 Built from `sum(rate(http_requests_total[1m])) by (job)` — requests per second per service, averaged over a rolling 1-minute window.
 
-![HTTP Request Rate panel](./screenshots/HTTP-request-rate.png)
+![HTTP Request Rate panel](./screenshots/HTTP request rate.png)
 
 ### HTTP 5xx Errors
 Built from `sum(rate(http_requests_total{status=~"5.."}[5m])) by (job)`. This panel correctly shows **No data** during normal operation — Prometheus only stores a series for label combinations that have actually occurred, and since no service had returned a 5xx at the time of this screenshot, there's nothing to plot yet. The panel comes alive the moment any service errors.
 
-![HTTP 5xx Errors panel — no data is expected here under normal operation](./screenshots/HTTP-5xx-errors.png)
+![HTTP 5xx Errors panel — no data is expected here under normal operation](./screenshots/HTTP 5xx errors.png)
 
 ## 5. Alert Testing
 
@@ -133,7 +133,7 @@ docker compose logs -f order-service | findstr /i "error"
 
 Example output, captured by sending a malformed request (`curl -X POST http://localhost:3001/orders -H "Content-Type: application/json" -d "null"`) while the filtered command was running:
 
-![Filtered error logs showing a real captured error](./screenshots/High-error-rate.png)
+![Filtered error logs showing a real captured error](./screenshots/High error rate.png)
 
 ```
 order-service-1 | SyntaxError: Unexpected token 'n', "null" is not valid JSON
