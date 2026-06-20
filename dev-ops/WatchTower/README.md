@@ -127,6 +127,8 @@ All five containers use a shared `json-file` log driver (configured via the `x-l
 docker compose logs -f
 ```
 
+![Error logs](./screenshots/HighErrorRate.png)
+
 **Filter logs to errors from a specific service** (Windows/CMD shown; swap `findstr /i "error"` for `grep -i error` on Mac/Linux):
 ```cmd
 docker compose logs -f order-service | findstr /i "error"
